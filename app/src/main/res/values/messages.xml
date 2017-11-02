@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fail_to_connect_to_tmdb">Fail to connect to TMDB</string>
+    <string name="searching_for_the_most_popular_movies">Searching for the most popular movies…</string>
+    <string name="fail_to_search_for_the_most_popular_movies">Fail to search for the most popular movies. Cause.: %s</string>
+</resources>

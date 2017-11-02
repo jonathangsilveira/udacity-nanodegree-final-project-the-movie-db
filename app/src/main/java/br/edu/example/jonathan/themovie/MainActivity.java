@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Fragment moviesFragment = getSupportFragmentManager().findFragmentByTag(MOVIES_FRAGMENT_TAG);
         if (moviesFragment == null) {
+            moviesFragment = MoviesFragment.newInstance(true);
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.activity_main_content, moviesFragment, MOVIES_FRAGMENT_TAG)
