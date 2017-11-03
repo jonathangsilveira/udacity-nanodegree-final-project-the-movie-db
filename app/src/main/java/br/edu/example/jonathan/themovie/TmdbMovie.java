@@ -1,26 +1,69 @@
 package br.edu.example.jonathan.themovie;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TmdbMovie implements Serializable {
+public class TmdbMovie implements Parcelable {
 
     private long voteCount;
+
     private long id;
+
     private boolean video;
+
     private double voteAverage;
+
     private String title;
+
     private double popularity;
+
     private String posterPath;
+
     private String originalLanguage;
+
     private String originalTitle;
+
     private List<Long> genreIds = new ArrayList<>();
+
     private String backdropPath;
+
     private boolean adult;
+
     private String overview;
+
     private Date releaseDate;
+
+    public static final Creator<TmdbMovie> CREATOR = new Creator<TmdbMovie>() {
+        @Override
+        public TmdbMovie createFromParcel(Parcel in) {
+            return new TmdbMovie(in);
+        }
+
+        @Override
+        public TmdbMovie[] newArray(int size) {
+            return new TmdbMovie[size];
+        }
+    };
+
+    protected TmdbMovie(Parcel in) {
+        voteCount = in.readLong();
+        id = in.readLong();
+        video = in.readByte() != 0;
+        voteAverage = in.readDouble();
+        title = in.readString();
+        popularity = in.readDouble();
+        posterPath = in.readString();
+        originalLanguage = in.readString();
+        originalTitle = in.readString();
+        backdropPath = in.readString();
+        adult = in.readByte() != 0;
+        overview = in.readString();
+        in.readList(genreIds, Long.class.getClassLoader());
+    }
 
     public long getVoteCount() {
         return voteCount;
@@ -134,4 +177,25 @@ public class TmdbMovie implements Serializable {
         this.releaseDate = releaseDate;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(voteCount);
+        dest.writeLong(id);
+        dest.writeByte((byte) (video ? 1 : 0));
+        dest.writeDouble(voteAverage);
+        dest.writeString(title);
+        dest.writeDouble(popularity);
+        dest.writeString(posterPath);
+        dest.writeString(originalLanguage);
+        dest.writeString(originalTitle);
+        dest.writeString(backdropPath);
+        dest.writeByte((byte) (adult ? 1 : 0));
+        dest.writeString(overview);
+        dest.writeList(genreIds);
+    }
 }

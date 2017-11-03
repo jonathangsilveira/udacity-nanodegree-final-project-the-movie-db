@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +24,7 @@ import br.edu.example.jonathan.themovie.util.TMDBUtil;
  * Use the {@link MoviesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MoviesFragment extends Fragment implements QueryMoviesAsyncTask.Callback {
+public class MoviesFragment extends Fragment implements QueryMoviesAsyncTask.Callback, MoviesAdapter.OnItemClickListener {
 
     private static final String RETAIN_INSTANCE_PARAM = "RETAIN_INSTANCE";
 
@@ -125,10 +126,31 @@ public class MoviesFragment extends Fragment implements QueryMoviesAsyncTask.Cal
         if (mDialog.isShowing()) {
             mDialog.dismiss();
         }
+        showErrorMessage(message);
+    }
+
+    private void showErrorMessage(String message) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         dialogBuilder.setTitle(R.string.error);
         dialogBuilder.setIcon(R.drawable.ic_error_black);
         dialogBuilder.setMessage(getString(R.string.fail_to_search_for_the_most_popular_movies, message));
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialogBuilder.show();
+    }
+
+    @Override
+    public void onItemClick(TmdbMovie movie) {
+        MovieDetailFragment fragment = MovieDetailFragment.newInstance(movie, true);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.activity_main_content, fragment)
+                .commit();
     }
 
 }

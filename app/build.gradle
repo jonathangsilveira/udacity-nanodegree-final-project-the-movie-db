@@ -17,12 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    /*buildTypes.each {
-        it.buildConfigField 'String', 'THE_MOVIE_DB_MAP_API_KEY', MyTheMovieDbMapApiKey = "b5608c7fcd15576edfe8564a93c3c451"
-    }*/
 }
 
 dependencies {
+    implementation 'com.android.support:design:26.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

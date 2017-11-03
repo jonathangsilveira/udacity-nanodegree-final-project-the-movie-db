@@ -18,7 +18,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     private Context mContext;
 
-    public MoviesAdapter(Context context, List<TmdbMovie> movies, List<Bitmap> bitmaps) {
+    private OnItemClickListener mOnItemClickListener;
+
+    MoviesAdapter(Context context, List<TmdbMovie> movies, List<Bitmap> bitmaps) {
         if (context == null || movies == null || bitmaps == null) {
             throw new IllegalArgumentException();
         }
@@ -35,7 +37,16 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
+        final TmdbMovie movie = mMovies.get(position);
         holder.mImageViewCover.setImageBitmap(mBitmaps.get(position));
+        if (mOnItemClickListener != null) {
+            holder.mImageViewCover.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(movie);
+                }
+            });
+        }
     }
 
     @Override
@@ -43,14 +54,26 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         return mMovies.size();
     }
 
+    void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
     class MovieViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView mImageViewCover;
 
-        public MovieViewHolder(View itemView) {
+        private TmdbMovie mMovie;
+
+        MovieViewHolder(View itemView) {
             super(itemView);
             mImageViewCover = itemView.findViewById(R.id.movie_item_thumbnail);
         }
+
+    }
+
+    interface OnItemClickListener {
+
+        void onItemClick(TmdbMovie movie);
 
     }
 
